@@ -1,0 +1,17 @@
+{% extends 'app/layout.html' %}
+{% block content %}
+
+<div class="container text-center">
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          {{ form.as_p }}
+          <div id="emailHelp" class="form-text">Type your name above.</div>
+        </div>
+        <input type="submit" value="Submit">
+      </form>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'app/layout.html' %}
+{% block content %}
+{% load static %}
+
+<form action="" method="post">
+    {%csrf_token%}
+    <div class="form-check">
+        <input type="checkbox" value="Start" id="apple" name="tasks">
+        <label for="start">Start</label>
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" value="Done" id="done" name="tasks">
+        <label for="done">Done</label>
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}
