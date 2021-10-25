@@ -9,7 +9,7 @@ urlpatterns = [
     path("thanks/", views.thanks, name="thanks"),
     path("user/<user_id>/", views.user, name="user"),
     path("check/", views.CHECKBOXES, name="checkboxes"),
-    #path("katian/", views.katian, name="katian"),
+    path("chore/<chore_id>", views.chore, name="chore"),
     #path("katian/", views.katian, name="katian"),
 ]
 

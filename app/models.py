@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime, date
 
 class UserChore(models.Model):
     name=models.CharField(max_length=50)
@@ -21,8 +22,9 @@ class Chore(models.Model):
     userchore=models.ManyToManyField(UserChore)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
-    StartTask=models.DateTimeField(auto_now_add=True)
-    CompletedTask=models.DateTimeField(auto_now=True)
+    #StartTask=models.DateField(auto_now_add=False, auto_now=False, blank=True, null=True)
+    #timestamp=models.DateField(auto_now_add=True, auto_now=False, blank=True)
+    #CompletedTask=models.DateTimeField(auto_now=True)
     #duration=models.DurationField()
 
     class Meta:

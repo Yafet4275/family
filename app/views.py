@@ -17,13 +17,18 @@ def user(request, user_id):
     chores=Chore.objects.filter(userchore=user)                           #Importing all fields in models.py
     return render(request, "app/user.html", {"user":user, "chores":chores})
 
+def chore(request, chore_id):
+    chores=Chore.objects.filter(id=chore_id)
+    return render(request, "app/chore.html", {"chores":chores})
+
 def CHECKBOXES(request):
     ms=['Start', 'Done']
     if request.method=='POST':
         tasks=request.POST.getlist('tasks')
         print(tasks)
         if tasks==['Start']:
-            tiempo_inicio=StartTask             #######  Me quede aqui
+            chores=Chore.objects.all()
+            #chores.StartTask=             
             print('You seleted Start')
             print(start)
         if tasks==['Done']:

@@ -1,0 +1,28 @@
+{% extends 'app/layout.html' %}
+{% block content %}
+{% load static %}
+
+{% for chore in chores %} 
+
+<div class="container text-center">
+    
+    <p> 
+        
+       <h1>Chore name: {{chore.name}} </h1>
+       
+       <p style="color: blue;">Description: {{chore.description}}</p>
+       <p><img style="width: 25%"; src="{{chore.imagen.url}}"></p>
+       
+        <p>Author: {{ chore.author }}</p>
+        <p>Assigned to: 
+            {% for username in chore.userchore.all %}
+              <a href="{% url 'user' user.id %}"> {{username.name}}</a>
+            {% endfor %}
+            </p>
+        <p><a href="{% url 'home' %}">Go back to home page</a></p>
+       
+    </p>
+</div>
+{% endfor %} 
+
+{% endblock %}
