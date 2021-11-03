@@ -7,11 +7,10 @@
 <div class="container text-center">
     
     <p> 
-        
        <h1>Chore name: {{chore.name}} </h1>
        
        <p style="color: blue;">Description: {{chore.description}}</p>
-       <p><img style="width: 25%"; src="{{chore.imagen.url}}"></p>
+       
        
         <p>Author: {{ chore.author }}</p>
         <p>Assigned to: 
@@ -20,9 +19,12 @@
             {% endfor %}
             </p>
         <p><a href="{% url 'home' %}">Go back to home page</a></p>
-       
     </p>
+    <br>
+    <hr class="solid">
+    <br>
 </div>
+
 {% endfor %} 
 
 {% endblock %}

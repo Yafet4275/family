@@ -2,8 +2,8 @@
 {% block content %}
 
 <div class="container text-center">
-    
-    <form method="post">
+    <h1>Form to create users</h1>
+    <form method="POST">
         {% csrf_token %}
         <div class="mb-3">
           {{ form.as_p }}

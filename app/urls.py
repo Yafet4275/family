@@ -10,7 +10,10 @@ urlpatterns = [
     path("user/<user_id>/", views.user, name="user"),
     path("check/", views.CHECKBOXES, name="checkboxes"),
     path("chore/<chore_id>", views.chore, name="chore"),
-    #path("katian/", views.katian, name="katian"),
+    path("<int:year>/<str:month>/", views.calendar, name="calendar"),
+    #path("add_event/", views.add_event, name="add-event"),
+    path("addChore/", views.addChore, name="addChore"),
+    path("addedChore/", views.addedChore, name="addedChore"),
 ]
 
-urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)              #That is a conf for media file

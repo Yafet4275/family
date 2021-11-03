@@ -25,7 +25,8 @@
     
     <p> 
         
-       <h1>Chore name: {{chore.name}} </h1>
+       <h1>Chore name: 
+        <a href="{% url 'chore' chore.id %}">{{chore.name}}</a> </h1>
        
        <p style="color: blue;">Description: {{chore.description}}</p>
        <p><img style="width: 25%"; src="{{chore.imagen.url}}"></p>
@@ -36,7 +37,7 @@
               <a href="{% url 'user' user.id %}"> {{username.name}}</a>
             {% endfor %}
             </p>
-       
+        <p><a href="{% url 'home' %}">Go back to home page</a></p>
     </p>
 </div>
 {% endfor %} 
