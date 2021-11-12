@@ -1,25 +1,13 @@
 {% extends 'app/layout.html' %}
 {% block content %}
 {% load static %}
-<p class="text-center"> This is Louis chores list</p>
+<p>&nbsp;</p>
+<p class="text-center"> <strong>This is chores list by user</strong></p>
 
 {% for chore in chores %} 
 
-<!-- Heading -->
-<!--<section class="page-section clearfix">
-    <div class="container">
-      <div class="intro">
-        <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{{louis.imagen.url}" alt="">
-        <div class="intro-text left-0 text-center bg-faded p-5 rounded">
-          <h2 class="section-heading mb-4" >
-            <span class="section-heading-upper">{{louis.name}}</span>
-            <span class="section-heading-lower">{{louis.description}}</span>
-          </h2>
-         
-        </div>
-      </div>
-    </div>
-  </section>-->
+<hr class="solid"> 
+<br>
 
 <div class="container text-center">
     
@@ -29,6 +17,7 @@
         <a href="{% url 'chore' chore.id %}">{{chore.name}}</a> </h1>
        
        <p style="color: blue;">Description: {{chore.description}}</p>
+       <p>&nbsp;</p>
        <p><img style="width: 25%"; src="{{chore.imagen.url}}"></p>
        
         <p>Author: {{ chore.author }}</p>
@@ -37,8 +26,10 @@
               <a href="{% url 'user' user.id %}"> {{username.name}}</a>
             {% endfor %}
             </p>
-        <p><a href="{% url 'home' %}">Go back to home page</a></p>
+        <p><a href="{% url 'home1' %}">Go back to home page</a></p>
     </p>
 </div>
-{% endfor %} 
+
+{% endfor %}
+
 {% endblock %}

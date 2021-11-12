@@ -4,6 +4,37 @@ from django.forms import fields, widgets, ModelForm
 from .models import UserChore, Chore
 
 
+BIRTH_YEAR_CHOICES = ['1980', '1981', '1982']
+FAVORITE_COLORS_CHOICES = [
+    ('start', 'Start'),
+    ('done', 'Done'),
+]
+
+
+class SimpleForm(forms.Form):
+    choices = forms.MultipleChoiceField(
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        choices=FAVORITE_COLORS_CHOICES,
+    )
+
+
+"""BIRTH_YEAR_CHOICES = ['1980', '1981', '1982']
+FAVORITE_COLORS_CHOICES = [
+    ('blue', 'Blue'),
+    ('green', 'Green'),
+    ('black', 'Black'),
+]
+
+class SimpleForm(forms.Form):
+    birth_year = forms.DateField(widget=forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES))
+    favorite_colors = forms.MultipleChoiceField(
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        choices=FAVORITE_COLORS_CHOICES,
+    )"""
+
+
 class UserChoreForm(forms.ModelForm):
     class Meta:
         model=UserChore
@@ -13,7 +44,7 @@ class UserChoreForm(forms.ModelForm):
 class ChoreForm(forms.ModelForm):
     class Meta:
         model=Chore
-        fields=['name', 'description', 'author']
+        fields=['name', 'content', 'author', 'userchore', 'state']
 
 
 class myform(forms.Form):

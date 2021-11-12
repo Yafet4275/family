@@ -3,19 +3,27 @@ import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
 from django.http import HttpResponseRedirect
-from .forms import UserChoreForm, ChoreForm
+from .forms import UserChoreForm, ChoreForm, SimpleForm
 from .models import Chore, UserChore, Event
 from django.core.mail import message, send_mail
+from django.core.exceptions import ObjectDoesNotExist
+import datetime
  
+
+def home2(request):
+    return render(request, 'app/index.html')
 
 def calendar(request, year, month):
     name="John"
     a=calendar.month(2016, month)
-    print(a)
     #month=month.capitalize()
     # Convert month from name to number
     #month_number=list(calendar.month).index(month)
     return render(request, 'app/calendar.html', {"name":name, "year":year, "month":month})
+
+def startChore(request, chore_id):
+    now=datetime.datetime.now()
+    return render(request, 'app/home1.html')
 
 """def add_event(request):
     submitted=False
@@ -30,10 +38,17 @@ def calendar(request, year, month):
             submitted=True
     return render(request, 'app/add_event.html', {'form':form, 'submitted':submitted})"""
 
+def checkbox(request):
+    form=SimpleForm()
+    return render(request, 'app/home.html', {"form":form})
 
-def home(request):
-    chores=Chore.objects.all()
-    return render(request, 'app/home.html', {"chores":chores})
+def home1(request):
+    #chores=Chore.objects.all()
+    form=SimpleForm()
+    now=datetime.datetime.now()
+    print(now)
+    chores=Chore.objects.filter(state=True)
+    return render(request, 'app/home1.html', {"chores":chores, "now":now, "form":form})
 
 """def add_event(request):
     submitted=False
@@ -52,7 +67,8 @@ def thanks(request):
     return render(request, 'app/thanks.html')
 
 def user(request, user_id):
-    user=UserChore.objects.get(id=user_id) 
+    user=UserChore.objects.get(id=user_id)
+    print(user)
     chores=Chore.objects.filter(userchore=user)                           #Importing all fields in models.py
     return render(request, "app/user.html", {"user":user, "chores":chores})
 
@@ -80,17 +96,50 @@ def addChore(request):
     else:
         form=ChoreForm()
     
-    return render(request, 'app/form.html', {'form':form})
+    return render(request, 'app/AddChore.html', {'form':form})
 
 def addedChore(request):
     return render(request, "app/chore_added.html")
 
-def chore(request, chore_id):
+def chore(request, chore_id):    
     chores=Chore.objects.filter(id=chore_id)
-    return render(request, "app/chore.html", {"chores":chores})
+    now=datetime.datetime.now()
+    return render(request, "app/chore.html", {"chores":chores, "now":now})
 
+def editChore(request, id):
+    chore_form=None
+    error=None
+    try:
+        chore=Chore.objects.get(id=id)
+        
+        if request.method=='GET':
+            chore_form=ChoreForm(instance=chore) 
+        else:
+            chore_form=ChoreForm(request.POST, instance=chore)
+            if chore_form.is_valid():
+                chore_form.save()
+            return redirect('home')
+    except ObjectDoesNotExist as e:
+        error=e
+    return render(request, 'app/edit_chore.html', {'form':chore_form, 'error':error})    
 
-def CHECKBOXES(request):
+def removeChore(request, id):
+    chore=Chore.objects.get(id=id)
+    chore.state=False
+    chore.save()
+    #chore.delete()
+    return redirect('home1')
+
+"""def removeChore(request, id):
+    chore=Chore.objects.get(id=id)
+    if request.method=='POST':
+        chore.state=False
+        #chore.delete()
+        chore.save()
+        return redirect('home')
+    return render(request, 'app/removeChore.html', {'chore':chore})"""
+
+"""def CHECKBOXES(request):
     ms=['Start', 'Done']
     if request.method=='POST':
         tasks=request.POST.getlist('tasks')
@@ -108,9 +157,9 @@ def CHECKBOXES(request):
             print('You seleted both and that is an invalid entry')
         if tasks==[]:
             print('Nothing was selected')
-    return render(request, 'app/checkboxes.html')
+    return render(request, 'app/checkboxes.html')"""
 
-def get_name(request):
+def AddUser(request):
     #if this a POST request we need to process the form  data
     if request.method=='POST':
         #Create a form instance and populate it with data from the request:
@@ -134,7 +183,7 @@ def get_name(request):
     else:
         form=UserChoreForm()
     
-    return render(request, 'app/form.html', {'form':form})
+    return render(request, 'app/AddUser.html', {'form':form})
 
 
 #def thanks(request):

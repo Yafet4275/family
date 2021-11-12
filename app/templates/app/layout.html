@@ -17,36 +17,31 @@
             
         <div class="container-fluid">
             
-          <a class="navbar-brand" href="{% url 'home' %}">Lopezfarm</a>
+          <a class="navbar-brand" href="{% url 'home1' %}">Lopezfarm</a>
           <div class="container">
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-link" aria-current="page" href="{% url 'home' %}">Home</a>
+              <a class="nav-link" aria-current="page" href="{% url 'home1' %}">Home</a>
               <a class="nav-link" aria-current="page" href="admin">Admin</a>
               
               <a class="nav-link" aria-current="page" href="{% url 'user' user_id=1 %}">Louis</a>
               <a class="nav-link" aria-current="page" href="{% url 'user' user_id=2 %}">Vicky</a>
               <a class="nav-link" aria-current="page" href="{% url 'user' user_id=3 %}">Katie-ann</a>
-              <a class="nav-link" aria-current="page" href="{% url 'form' %}">Add user</a>
-              <!--<a class="nav-link" aria-current="page" href="{% url 'addChore' %}">Add Chore</a>-->
-              <ul>
+              <a class="nav-link" aria-current="page" href="{% url 'AddUser' %}">Add user</a>
+              <a class="nav-link" aria-current="page" href="{% url 'addChore' %}">Add Chore</a>
+              <!--<ul>
                 <li id="menu-item-7" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7"><a href="localhost">Testing</a></li>
-              </ul>              
+              </ul>-->              
             </div>
           </div>
         </div>
         </div>
       </nav>
 
-      <div class="jumbotron jumbotron-fluid bg-white">
-          <div class="container text-center">
-              <h1 class="display-2">Task list</h1>
-              
-          </div>
-      </div>
+      
 
    {% block content %}
    {% endblock %}
@@ -140,9 +135,7 @@
     <!-- Section: Text -->
     <section class="mb-4">
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum
-        repellat quaerat voluptatibus placeat nam, commodi optio pariatur est quia magnam
-        eum harum corrupti dicta, aliquam sequi voluptate quas.
+        This web site belongs to Lopezfarm
       </p>
     </section>
     <!-- Section: Text -->
@@ -243,8 +236,8 @@
 
   <!-- Copyright -->
   <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-    © 2020 Copyright:
-    <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+    © 2021 Copyright:
+    <a class="text-white" href="">thelopezfarm.com</a>
   </div>
   <!-- Copyright -->
 </footer>

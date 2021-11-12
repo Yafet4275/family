@@ -1,0 +1,20 @@
+{% extends 'app/layout.html' %}
+{% block content %}
+
+<div class="container text-center">
+    <h1>Form to create a new chore</h1>
+    <div id="emailHelp" class="form-text">Type your chore name below.</div>
+    <form method="POST">
+        {% csrf_token %}
+        
+          <div class="mb-3">
+            {{ form.media }}
+            {{ form.as_p }} 
+          </div>
+         
+        <input type="submit" value="Submit">
+      </form>
+
+</div>
+
+{% endblock %}

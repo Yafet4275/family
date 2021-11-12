@@ -1,30 +1,61 @@
 {% extends 'app/layout.html' %}
+{% extend 'app/home1.html'}
 {% block content %}
 {% load static %}
 
-{% for chore in chores %} 
+{% if chores %}
 
-<div class="container text-center">
+    {% for chore in chores %}
     
-    <p> 
-       <h1>Chore name: {{chore.name}} </h1>
-       
-       <p style="color: blue;">Description: {{chore.description}}</p>
-       
-       
-        <p>Author: {{ chore.author }}</p>
-        <p>Assigned to: 
-            {% for username in chore.userchore.all %}
-              <a href="{% url 'user' user.id %}"> {{username.name}}</a>
-            {% endfor %}
-            </p>
-        <p><a href="{% url 'home' %}">Go back to home page</a></p>
-    </p>
-    <br>
     <hr class="solid">
-    <br>
-</div>
+    <section class="page-section clearfix">
+        <div class="container">
+            <div class="intro-text left-0 text-center bg-faded p-5 rounded">
+                <h2 class="section-heading mb-4" >
+                    <p>
+                    <span class="section-heading-lower">Chore name: <a href="{% url 'chore' chore.id %}">{{chore.name}}</a></span></p>
+                    
+                </h2>
+                
+                
+                <div class="intro">
+                    <h5>This picture shows you how this chore look like when is completed</h5>
+                    <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{{chore.imagen.url}}" alt="" style="width: 100%;">
+                    
+                </div>
+                <div style="text-align: center; font-size: 0.8em;">
+                    <p><h2>
+                    <span class="section-heading-upper">Description: </h2>{{chore.content | safe}}</span></p></div> 
+                <div>   
+                    <P style="text-align: center"><strong><span style="font-size: 18px"></span>Author:&nbsp;&nbsp;</span></strong> {{ chore.author }}</p>
+                    <P style="text-align: center"><strong><span style="font-size: 18px"></span>Chore Assigned to:&nbsp;&nbsp;</span></strong>
+                    {% for username in chore.userchore.all %}
+                    
+                        <a href="{% url 'user' username.id %}"> {{username.name}}</a>
+                        
+                    {% endfor %}
+                    </p>
+                    
+                    <P style="text-align: center"><strong><span style="font-size: 18px"></span>This should start with this chore at: &nbsp;&nbsp;</span></strong>{{ chore.start_task }}</P>
+                    {{ form }}
+                    <p><a href="{% url 'startChore' chore.id %}">Click here when start</a></p>
+                    <p><a href="{% url 'deleteChore' chore.id %}">Click when done</a></p>
+                    <p><a href="{% url 'editChore' chore.id %}">Edit chore?</a></p>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    
+   
+    {% endfor %}
 
-{% endfor %} 
+    
+{% else %}
+    <h1>There is no chores Assigned</h1>
+  
+{% endif %}
+
+
 
 {% endblock %}
