@@ -1,14 +1,19 @@
 from django.shortcuts import render, redirect
 import calendar
-from calendar import HTMLCalendar
+#from calendar import HTMLCalendar
 from datetime import datetime
 from django.http import HttpResponseRedirect
 from .forms import UserChoreForm, ChoreForm, SimpleForm
-from .models import Chore, UserChore, Event
-from django.core.mail import message, send_mail
+from .models import Chore, UserChore
+#from django.core.mail import message, send_mail
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
- 
+from django.db.models import Q
+from django.core.paginator import Paginator
+
+#Global variables
+def giveTime():
+    now=datetime.datetime.now() 
 
 def home2(request):
     return render(request, 'app/index.html')
@@ -23,7 +28,7 @@ def calendar(request, year, month):
 
 def startChore(request, chore_id):
     now=datetime.datetime.now()
-    return render(request, 'app/home1.html')
+    return render(request, 'app/home1.html', {'now':now})
 
 """def add_event(request):
     submitted=False
@@ -43,11 +48,18 @@ def checkbox(request):
     return render(request, 'app/home.html', {"form":form})
 
 def home1(request):
-    #chores=Chore.objects.all()
-    form=SimpleForm()
-    now=datetime.datetime.now()
-    print(now)
+    #chores=Chore.objects.all()              
     chores=Chore.objects.filter(state=True)
+    queryset=request.GET.get("search")                                          #Getting information from GET method
+    if queryset:
+        chores=Chore.objects.filter(
+            Q(name__icontains=queryset) | Q(content__icontains=queryset)        #It takes search word in the name or content ignoring the rest
+        ).distinct()                                                            #Disting is to separate fron the one are iquals
+    now=datetime.datetime.now()
+    form=SimpleForm()
+    paginator=Paginator(chores, 2)
+    page=request.GET.get('page')
+    chores=paginator.get_page(page)
     return render(request, 'app/home1.html', {"chores":chores, "now":now, "form":form})
 
 """def add_event(request):
@@ -67,13 +79,19 @@ def thanks(request):
     return render(request, 'app/thanks.html')
 
 def user(request, user_id):
+    now=datetime.datetime.now()
     user=UserChore.objects.get(id=user_id)
-    print(user)
     chores=Chore.objects.filter(userchore=user)                           #Importing all fields in models.py
-    return render(request, "app/user.html", {"user":user, "chores":chores})
+    queryset=request.GET.get("search")
+    if queryset:
+        chores=Chore.objects.filter(
+            Q(name__icontains=queryset) | Q(content__icontains=queryset)        #It takes search word in the name or content ignoring the rest
+        ).distinct()                
+    return render(request, "app/user.html", {"user":user, "chores":chores, "now":now})
 
 
 def addChore(request):
+    now=datetime.datetime.now()
     if request.method=='POST':
         #Create a form instance and populate it with data from the request:
         form=ChoreForm(request.POST)
@@ -96,14 +114,15 @@ def addChore(request):
     else:
         form=ChoreForm()
     
-    return render(request, 'app/AddChore.html', {'form':form})
+    return render(request, 'app/AddChore.html', {'form':form, "now":now})
+    
 
 def addedChore(request):
     return render(request, "app/chore_added.html")
 
-def chore(request, chore_id):    
+def chore(request, chore_id):
+    now=datetime.datetime.now()   
     chores=Chore.objects.filter(id=chore_id)
-    now=datetime.datetime.now()
     return render(request, "app/chore.html", {"chores":chores, "now":now})
 
 def editChore(request, id):
@@ -160,6 +179,7 @@ def removeChore(request, id):
     return render(request, 'app/checkboxes.html')"""
 
 def AddUser(request):
+    now=datetime.datetime.now()
     #if this a POST request we need to process the form  data
     if request.method=='POST':
         #Create a form instance and populate it with data from the request:
@@ -183,7 +203,7 @@ def AddUser(request):
     else:
         form=UserChoreForm()
     
-    return render(request, 'app/AddUser.html', {'form':form})
+    return render(request, 'app/AddUser.html', {'form':form, 'now':now})
 
 
 #def thanks(request):

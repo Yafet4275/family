@@ -1,7 +1,11 @@
 {% extends 'app/layout.html' %}
-{% extend 'app/home1.html'}
-{% block content %}
 {% load static %}
+
+{% block tittle %}
+{% endblock tittle %}
+
+
+{% block content %}
 
 {% if chores %}
 
@@ -16,7 +20,6 @@
                     <span class="section-heading-lower">Chore name: <a href="{% url 'chore' chore.id %}">{{chore.name}}</a></span></p>
                     
                 </h2>
-                
                 
                 <div class="intro">
                     <h5>This picture shows you how this chore look like when is completed</h5>
@@ -47,15 +50,10 @@
         </div>
     </section>
     
-   
     {% endfor %}
-
     
 {% else %}
     <h1>There is no chores Assigned</h1>
-  
 {% endif %}
 
-
-
-{% endblock %}
+{% endblock content %}
