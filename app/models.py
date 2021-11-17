@@ -27,7 +27,7 @@ class Chore(models.Model):
     name=models.CharField('Chore name', max_length=100, null=False, blank=False)
     #description=models.CharField('Description', max_length=200)
     content=RichTextField('Content', blank=True, null=True)
-    imagen=models.ImageField(upload_to="app", null=True, blank=True)
+    imagen=models.ImageField(upload_to="app", null=False, blank=False)
     author=models.ForeignKey(User, on_delete=models.CASCADE)
     userchore=models.ManyToManyField(UserChore)
     created=models.DateTimeField('Created date', auto_now=False, auto_now_add=True)

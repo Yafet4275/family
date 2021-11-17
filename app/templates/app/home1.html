@@ -29,12 +29,9 @@
                     <P style="text-align: center"><strong><span style="font-size: 18px"></span>Author:&nbsp;&nbsp;</span></strong> {{ chore.author }}</p>
                     <P style="text-align: center"><strong><span style="font-size: 18px"></span>Chore Assigned to:&nbsp;&nbsp;</span></strong>
                     {% for username in chore.userchore.all %}
-                    
                         <a href="{% url 'user' username.id %}"> {{username.name}}</a>
-                        
                     {% endfor %}
                     </p>
-                    
                     <P style="text-align: center"><strong><span style="font-size: 18px"></span>This should start with this chore at: &nbsp;&nbsp;</span></strong>{{ chore.start_task }}</P>
                     {{ form }}
                     <p><a href="{% url 'startChore' chore.id %}">Click here when start</a></p>
@@ -45,13 +42,38 @@
             </div>
         </div>
     </section>
-    
    
     {% endfor %}
 
     
 {% else %}
-    <h1>There is no chores Assigned</h1>
+    <h1 style="text-align: center;">There is no chores Assigned</h1>
 {% endif %}
+
+{% block paginator %}
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 float-left">
+            {% if chores.has_previous %} 
+                <div class="clearfix">
+                    <a href="?page={{chores.previous_page_number}}{% if request.GET.search %}&q={{request.GET.rearch}}{% endif %}"  class="btn btn-primary float-left">Previous</a>
+                </div>
+            {% endif %}
+          </div>
+        </div>
+
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+          <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 float-right">
+            {% if chores.has_next %} 
+                <div class="clearfix">
+                    <a href="?page={{chores.next_page_number}}{% if request.GET.search %}&q={{request.GET.rearch}}{% endif %}" class="btn btn-primary float-right">Next</a>
+                </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock paginator %}
 
 {% endblock content %}

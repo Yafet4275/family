@@ -12,7 +12,7 @@ class ChoreResource(resources.ModelResource):
 
 class ChoreAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     search_fields=['name', 'state', 'state']
-    list_display=('id', 'name', 'start_task', 'state', 'created', 'updated')
+    list_display=('id', 'name', 'start_task', 'imagen', 'state', 'created', 'updated')
     #readonly_fields=('created', 'updated')
     resource_class=ChoreResource
 

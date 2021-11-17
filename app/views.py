@@ -57,9 +57,9 @@ def home1(request):
         ).distinct()                                                            #Disting is to separate fron the one are iquals
     now=datetime.datetime.now()
     form=SimpleForm()
-    paginator=Paginator(chores, 2)
-    page=request.GET.get('page')
-    chores=paginator.get_page(page)
+    paginator=Paginator(chores, 5)                                              #Shows 2 products per page
+    page=request.GET.get('page')                                                #Get what is the current page
+    chores=paginator.get_page(page)                                             #Get list of product according with current page
     return render(request, 'app/home1.html', {"chores":chores, "now":now, "form":form})
 
 """def add_event(request):
@@ -86,7 +86,10 @@ def user(request, user_id):
     if queryset:
         chores=Chore.objects.filter(
             Q(name__icontains=queryset) | Q(content__icontains=queryset)        #It takes search word in the name or content ignoring the rest
-        ).distinct()                
+        ).distinct()
+    paginator=Paginator(chores, 5)                                              #Shows 2 products per page
+    page=request.GET.get('page')                                                #Get what is the current page
+    chores=paginator.get_page(page)                                             #Get list of product according with current page                
     return render(request, "app/user.html", {"user":user, "chores":chores, "now":now})
 
 
@@ -98,7 +101,7 @@ def addChore(request):
         #Check whether it's valid:
         if form.is_valid():
             form.save()
-            return redirect('addedChore')
+            return redirect('home1')
             #Process the data in form.cleaned_data as required
             #subject=form.cleaned_data['subject']
             #message=form.cleaned_data['message']
@@ -113,12 +116,11 @@ def addChore(request):
     #if a GET (or any other method) We'll create a blank form
     else:
         form=ChoreForm()
-    
     return render(request, 'app/AddChore.html', {'form':form, "now":now})
     
 
 def addedChore(request):
-    return render(request, "app/chore_added.html")
+    return render(request, "app/home1.html")
 
 def chore(request, chore_id):
     now=datetime.datetime.now()   
@@ -130,14 +132,13 @@ def editChore(request, id):
     error=None
     try:
         chore=Chore.objects.get(id=id)
-        
         if request.method=='GET':
             chore_form=ChoreForm(instance=chore) 
         else:
             chore_form=ChoreForm(request.POST, instance=chore)
             if chore_form.is_valid():
                 chore_form.save()
-            return redirect('home')
+            return redirect('home1')
     except ObjectDoesNotExist as e:
         error=e
     return render(request, 'app/edit_chore.html', {'form':chore_form, 'error':error})    
