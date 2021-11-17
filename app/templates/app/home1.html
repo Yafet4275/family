@@ -32,7 +32,7 @@
                         <a href="{% url 'user' username.id %}"> {{username.name}}</a>
                     {% endfor %}
                     </p>
-                    <P style="text-align: center"><strong><span style="font-size: 18px"></span>This should start with this chore at: &nbsp;&nbsp;</span></strong>{{ chore.start_task }}</P>
+                    <P style="text-align: center"><strong><span style="font-size: 18px"></span>Time you should start: &nbsp;&nbsp;</span></strong>{{ chore.start_task }}</P>
                     {{ form }}
                     <p><a href="{% url 'startChore' chore.id %}">Click here when start</a></p>
                     <p><a href="{% url 'deleteChore' chore.id %}">Click when done</a></p>
