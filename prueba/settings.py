@@ -115,7 +115,7 @@ CKEDITOR_CONFIGS = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Etc/GMT+2'
+TIME_ZONE = 'Etc/GMT+6'
 
 USE_I18N = True
 
