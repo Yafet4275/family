@@ -24,7 +24,7 @@ def login1(request):
             now=datetime.datetime.now()
             usernameCap=username.capitalize()
             user=UserChore.objects.get(name=usernameCap)
-            chores=Chore.objects.filter(userchore=user)
+            chores=Chore.objects.filter(userchore=user, state=True)
             return render(request, "app/user.html", {"user":user, "chores":chores, "now":now})
             # Redirect to a success page.
             #return redirect('home')
@@ -36,6 +36,7 @@ def login1(request):
     else:
         return render(request, 'app/login.html')
 
+@login_required(login_url=LOGIN_URL)
 def logout_view(request):
     logout(request)
     return render(request, 'login/login.html')
@@ -44,9 +45,11 @@ def logout_view(request):
 def home(request):
     return render(request, 'login/home.html')
 
+@login_required(login_url=LOGIN_URL)
 def home2(request):
     return render(request, 'app/index.html')
 
+@login_required(login_url=LOGIN_URL)
 def calendar(request, year, month):
     name="John"
     a=calendar.month(2016, month)
@@ -55,6 +58,7 @@ def calendar(request, year, month):
     #month_number=list(calendar.month).index(month)
     return render(request, 'app/calendar.html', {"name":name, "year":year, "month":month})
 
+@login_required(login_url=LOGIN_URL)
 def startChore(request, chore_id):
     now=datetime.datetime.now()
     return render(request, 'app/home1.html', {'now':now})
@@ -72,23 +76,10 @@ def startChore(request, chore_id):
             submitted=True
     return render(request, 'app/add_event.html', {'form':form, 'submitted':submitted})"""
 
+@login_required(login_url=LOGIN_URL)
 def checkbox(request):
     form=SimpleForm()
     return render(request, 'app/home.html', {"form":form})
-
-def yafetChore(request):
-    now=datetime.datetime.now()
-    user=UserChore.objects.get(id=5)
-    chores=Chore.objects.filter(userchore=user)                           #Importing all fields in models.py
-    queryset=request.GET.get("search")
-    if queryset:
-        chores=Chore.objects.filter(
-            Q(name__icontains=queryset) | Q(content__icontains=queryset)        #It takes search word in the name or content ignoring the rest
-        ).distinct()
-    paginator=Paginator(chores, 5)                                              #Shows 2 products per page
-    page=request.GET.get('page')                                                #Get what is the current page
-    chores=paginator.get_page(page)                                             #Get list of product according with current page                
-    return render(request, "app/user.html", {"user":user, "chores":chores, "now":now})                                               #Disting is to separate fron the one are iquals
     
 
 @login_required(login_url=LOGIN_URL)
@@ -120,15 +111,11 @@ def home1(request):
             submitted=True
     return render(request, 'app/add_event.html', {'form':form, 'submitted':submitted})"""   
 
-def thanks(request):
-    return render(request, 'app/thanks.html')
-
+@login_required(login_url=LOGIN_URL)
 def user(request, user_id):
     now=datetime.datetime.now()
     user=UserChore.objects.get(id=user_id)
-    print(user)
-    chores=Chore.objects.filter(userchore=user)
-    print(chores)                           #Importing all fields in models.py
+    chores=Chore.objects.filter(userchore=user)                                 #Importing all fields in models.py                         
     queryset=request.GET.get("search")
     if queryset:
         chores=Chore.objects.filter(
@@ -139,7 +126,7 @@ def user(request, user_id):
     chores=paginator.get_page(page)                                             #Get list of product according with current page                
     return render(request, "app/user.html", {"user":user, "chores":chores, "now":now})
 
-
+@login_required(login_url=LOGIN_URL)
 def addChore(request):
     now=datetime.datetime.now()
     if request.method=='POST':
@@ -165,15 +152,17 @@ def addChore(request):
         form=ChoreForm()
     return render(request, 'app/AddChore.html', {'form':form, "now":now})
     
-
+@login_required(login_url=LOGIN_URL)
 def addedChore(request):
     return render(request, "app/home1.html")
 
+@login_required(login_url=LOGIN_URL)
 def chore(request, chore_id):
     now=datetime.datetime.now()   
     chores=Chore.objects.filter(id=chore_id)
     return render(request, "app/chore.html", {"chores":chores, "now":now})
 
+@login_required(login_url=LOGIN_URL)
 def editChore(request, id):
     chore_form=None
     error=None
@@ -190,12 +179,17 @@ def editChore(request, id):
         error=e
     return render(request, 'app/edit_chore.html', {'form':chore_form, 'error':error})    
 
-def removeChore(request, id):
+@login_required(login_url=LOGIN_URL)
+def removeChore(request, user_id, id):
+    now=datetime.datetime.now()
+    user=UserChore.objects.get(id=user_id)
     chore=Chore.objects.get(id=id)
     chore.state=False
     chore.save()
+    chores=Chore.objects.filter(userchore=user_id, state=True)                                 #Importing all fields in models.
+    print(chores)
     #chore.delete()
-    return redirect('home1')
+    return render(request, "app/user.html", {"user": user, "chores":chores, "now":now})
 
 """def removeChore(request, id):
     chore=Chore.objects.get(id=id)
@@ -226,6 +220,7 @@ def removeChore(request, id):
             print('Nothing was selected')
     return render(request, 'app/checkboxes.html')"""
 
+@login_required(login_url=LOGIN_URL)
 def AddUser(request):
     now=datetime.datetime.now()
     #if this a POST request we need to process the form  data
@@ -252,7 +247,3 @@ def AddUser(request):
         form=UserChoreForm()
     
     return render(request, 'app/AddUser.html', {'form':form, 'now':now})
-
-
-#def thanks(request):
-#    return render()

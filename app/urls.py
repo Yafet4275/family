@@ -7,15 +7,10 @@ from django.contrib.auth.views import LoginView, logout_then_login
 urlpatterns = [
     path("accounts/login/", views.login1, name="login"),
     path("logout/", logout_then_login, name="logout"),
-
-
     path("checkbox", views.checkbox, name="checkbox"),
     path("home2", views.home2, name="home2"),
     path("", views.home1, name="home1"),
-    path("yafetChore", views.yafetChore, name="yafetChore"),
-    
     path("AddUser", views.AddUser, name="AddUser"),
-    path("thanks/", views.thanks, name="thanks"),
     path("user/<user_id>/", views.user, name="user"),
     #path("check/", views.CHECKBOXES, name="checkboxes"),
     path("chore/<chore_id>", views.chore, name="chore"),
@@ -24,7 +19,7 @@ urlpatterns = [
     path("addChore/", views.addChore, name="addChore"),
     path("addedChore/", views.addedChore, name="addedChore"),
     path("editChore/<int:id>/", views.editChore, name="editChore"),
-    path("deleteChore/<int:id>", views.removeChore, name="deleteChore"),
+    path("deleteChore/<user_id>/<int:id>/", views.removeChore, name="deleteChore"),
     path("startChore/<int:id>", views.startChore, name="startChore")
 ]
 

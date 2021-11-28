@@ -33,7 +33,7 @@
             {% endfor %}
             </p>
             <P style="text-align: center"><strong><span style="font-size: 18px"></span>This should start with this chore at: &nbsp;&nbsp;</span></strong>{{ chore.start_task }}</P>
-        <p><a href="{% url 'home1' %}">Go back to home page</a></p>
+            <p><a href="{% url 'deleteChore' user.id chore.id %}">Click when done</a></p>
     </p>
 </div>
 
