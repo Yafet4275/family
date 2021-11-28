@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-import calendar
-#from calendar import HTMLCalendar
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from prueba.settings import LOGIN_URL
+from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from .forms import UserChoreForm, ChoreForm, SimpleForm
 from .models import Chore, UserChore
@@ -11,9 +13,36 @@ import datetime
 from django.db.models import Q
 from django.core.paginator import Paginator
 
-#Global variables
-def giveTime():
-    now=datetime.datetime.now() 
+def login1(request):
+    if request.method=='POST':
+        #form=ChoreForm(request.POST)
+        username = (request.POST['username'])
+        password = (request.POST['password'])
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            now=datetime.datetime.now()
+            usernameCap=username.capitalize()
+            user=UserChore.objects.get(name=usernameCap)
+            chores=Chore.objects.filter(userchore=user)
+            return render(request, "app/user.html", {"user":user, "chores":chores, "now":now})
+            # Redirect to a success page.
+            #return redirect('home')
+            #return render(request, "app/home1.html") 
+            #return redirect('user')
+        else:
+            # Return an 'invalid login' error message.
+            return redirect('login')
+    else:
+        return render(request, 'app/login.html')
+
+def logout_view(request):
+    logout(request)
+    return render(request, 'login/login.html')
+
+@login_required(login_url=LOGIN_URL)
+def home(request):
+    return render(request, 'login/home.html')
 
 def home2(request):
     return render(request, 'app/index.html')
@@ -47,6 +76,22 @@ def checkbox(request):
     form=SimpleForm()
     return render(request, 'app/home.html', {"form":form})
 
+def yafetChore(request):
+    now=datetime.datetime.now()
+    user=UserChore.objects.get(id=5)
+    chores=Chore.objects.filter(userchore=user)                           #Importing all fields in models.py
+    queryset=request.GET.get("search")
+    if queryset:
+        chores=Chore.objects.filter(
+            Q(name__icontains=queryset) | Q(content__icontains=queryset)        #It takes search word in the name or content ignoring the rest
+        ).distinct()
+    paginator=Paginator(chores, 5)                                              #Shows 2 products per page
+    page=request.GET.get('page')                                                #Get what is the current page
+    chores=paginator.get_page(page)                                             #Get list of product according with current page                
+    return render(request, "app/user.html", {"user":user, "chores":chores, "now":now})                                               #Disting is to separate fron the one are iquals
+    
+
+@login_required(login_url=LOGIN_URL)
 def home1(request):
     #chores=Chore.objects.all()              
     chores=Chore.objects.filter(state=True)
@@ -81,7 +126,9 @@ def thanks(request):
 def user(request, user_id):
     now=datetime.datetime.now()
     user=UserChore.objects.get(id=user_id)
-    chores=Chore.objects.filter(userchore=user)                           #Importing all fields in models.py
+    print(user)
+    chores=Chore.objects.filter(userchore=user)
+    print(chores)                           #Importing all fields in models.py
     queryset=request.GET.get("search")
     if queryset:
         chores=Chore.objects.filter(
